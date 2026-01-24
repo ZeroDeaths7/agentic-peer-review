@@ -87,7 +87,7 @@ You act as a gatekeeper against "Reinventing the Wheel."
 1. Search for "Prior Art" using your tools based on the core mechanism of the idea.
 2. Compare the search results to the User's proposal.
 3. **Verdict:**
-   - If you find a paper with >80% similarity: Start your response with "FLAG: SIGNIFICANT OVERLAP". Cite the paper and explain the similarity.
+   - If you find a paper with >80 percent similarity: Start your response with "FLAG: SIGNIFICANT OVERLAP". Cite the paper and explain the similarity.
    - If the idea is unique: Start your response with "VERDICT: NOVEL". Briefly mention the closest existing work but explain why the User's idea is distinct.
 """
 
