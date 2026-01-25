@@ -18,12 +18,9 @@ class GraphState(TypedDict):
         debate_round: A counter to track how many back-and-forth turns have 
                       occurred. Used to enforce a limit (e.g., max 5 turns).
     """
-    
-    # The primary conversation history. 
-    # Storing as BaseMessage allows us to handle HumanMessage, AIMessage, 
-    # and ToolMessage (from the Librarian) natively.
+
     messages: Annotated[List[BaseMessage], add_messages]
     
-    # Metadata for the Supervisor logic
+    # Metadata for supervisor logic
     next_speaker: str
     debate_round: int

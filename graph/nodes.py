@@ -1,7 +1,7 @@
 import os
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, ToolMessage, AIMessage
-from langchain_core.pydantic_v1 import BaseModel, Field
+from pydantic import BaseModel, Field
 from typing import Literal, List
 
 # Local Imports
@@ -18,13 +18,13 @@ from graph.prompts import (
 
 
 llm_flash = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash", # or "gemini-1.5-flash"
+    model="gemini-2.5-flash",
     temperature=0.5,
     convert_system_message_to_human=True
 )
 
 llm_pro = ChatGoogleGenerativeAI(
-    model="gemini-2.5-pro", # or "gemini-1.5-pro"
+    model="gemini-2.5-pro", 
     temperature=0.7,
     convert_system_message_to_human=True
 )
@@ -80,7 +80,6 @@ def supervisor_node(state: GraphState):
     messages = state["messages"]
     current_round = state.get("debate_round", 0)
     
-    # 1. Hard Termination Limit
     if current_round >= 10:
         return {"next_speaker": "End"}
 
@@ -95,7 +94,6 @@ def supervisor_node(state: GraphState):
         last_speaker=last_speaker
     )
     
-    # 3. Invoke with Structured Output
     structured_llm = llm_flash.with_structured_output(RouteSchema)
     
     try:
@@ -105,7 +103,7 @@ def supervisor_node(state: GraphState):
         ])
         next_node = decision.next_speaker
     except Exception as e:
-        # Fallback if structured output fails
+        # Fallback
         print(f"Supervisor Error: {e}")
         next_node = "End"
 
@@ -157,27 +155,22 @@ def librarian_node(state: GraphState):
     """
     messages = state["messages"]
     
-    # Bind tools to the model
     llm_with_tools = llm_flash.bind_tools(search_tools)
     
-    # 1. Initial Call (Agent decides IF it needs to search)
     response_1 = llm_with_tools.invoke([
         SystemMessage(content=LIBRARIAN_SYSTEM_PROMPT),
         *messages
     ])
     
-    # 2. Check for Tool Calls
     if response_1.tool_calls:
-        # Execute tools locally
         tool_results = execute_tools_inline(response_1, search_tools)
         
-        # 3. Feed results back to LLM for final synthesis
-        # We construct a temporary history just for this synthesis step
+        # construct temporary history for this synthesis step
         synthesis_messages = [
             SystemMessage(content=LIBRARIAN_SYSTEM_PROMPT),
             *messages,
-            response_1, # The 'I want to call a tool' message
-            *tool_results # The actual tool outputs
+            response_1, 
+            *tool_results 
         ]
         
         final_response = llm_flash.invoke(synthesis_messages)
@@ -185,7 +178,6 @@ def librarian_node(state: GraphState):
         return {"messages": [final_response], "current_speaker": "Librarian"}
     
     else:
-        # Agent decided no search was needed (or failed to call)
         response_1.name = "Librarian"
         return {"messages": [response_1], "current_speaker": "Librarian"}
     
