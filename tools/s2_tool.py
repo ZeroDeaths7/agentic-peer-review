@@ -5,22 +5,21 @@ from typing import List
 from langchain_core.tools import tool
 from tools.schemas import StandardPaper
 
-# Import retry logic
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
 
-# Define a custom exception for Rate Limits so we can retry specifically on them
+# Custom exception for Rate Limits
 class RateLimitError(Exception):
     pass
 
 @retry(
-    stop=stop_after_attempt(3),              # Try 3 times max
-    wait=wait_exponential(multiplier=2, min=2, max=10), # Wait 2s, 4s, 8s
+    stop=stop_after_attempt(3),              
+    wait=wait_exponential(multiplier=2, min=2, max=10),
     retry=retry_if_exception_type(RateLimitError) # Only retry on 429 errors
 )
 def fetch_from_s2(url, params, headers):
     response = requests.get(url, params=params, headers=headers, timeout=10)
     if response.status_code == 429:
-        print("⚠️ Rate limit hit (429). Retrying...")
+        print("Rate limit hit (429). Retrying...")
         raise RateLimitError("Rate limit hit")
     return response
 
@@ -35,7 +34,6 @@ def search_semantic_scholar(query: str, max_results: int = 3) -> List[dict]:
         params = {"query": query, "limit": max_results, "fields": fields}
         headers = {"User-Agent": "SocraticDebateBot/1.0"}
 
-        # Call the helper function with retry logic
         response = fetch_from_s2(url, params, headers)
         
         if response.status_code != 200:
