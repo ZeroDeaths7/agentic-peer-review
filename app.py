@@ -22,7 +22,7 @@ async def start():
     Init the session
     """
 
-    cl.user_session.set_state("graph", app)
+    cl.user_session.set("graph", app)
 
     await cl.Message(
         content = "**Socratic Peer Review Ring Initialized.**\n\nI am ready to critique your research ideas. Please propose a topic or hypothesis.",
