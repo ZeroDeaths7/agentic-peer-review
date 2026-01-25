@@ -57,7 +57,6 @@ async def handle_message(message: cl.Message):
 
                 # 2. Final agent responses
                 if content:
-                    # Choose the icon based on the node name
                     avatar_icon = AVATARS.get(node_name, "🤖")
                     
                     await cl.Message(
