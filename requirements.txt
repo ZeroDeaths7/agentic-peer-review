@@ -1,0 +1,10 @@
+langchain
+langchain-openai
+langchain-google-genai
+langchain-core
+langgraph
+chainlit
+arxiv
+requests
+tenacity
+pydantic
