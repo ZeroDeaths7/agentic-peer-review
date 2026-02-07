@@ -1,6 +1,6 @@
 langchain
 langchain-openai
-langchain-google-genai
+langchain-groq
 langchain-core
 langgraph
 chainlit

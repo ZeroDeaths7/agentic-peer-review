@@ -1,5 +1,5 @@
 import os
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.messages import SystemMessage, ToolMessage, AIMessage
 from pydantic import BaseModel, Field
 from typing import Literal, List
@@ -17,16 +17,14 @@ from graph.prompts import (
 )
 
 
-llm_flash = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash",
-    temperature=0.5,
-    convert_system_message_to_human=True
+llm_flash = ChatGroq(
+    model="openai/gpt-oss-120b",
+    temperature=0.5
 )
 
-llm_pro = ChatGoogleGenerativeAI(
-    model="gemini-2.5-pro", 
-    temperature=0.7,
-    convert_system_message_to_human=True
+llm_pro = ChatGroq(
+    model="openai/gpt-oss-120b", 
+    temperature=0.7
 )
 
 
@@ -165,15 +163,15 @@ def librarian_node(state: GraphState):
     if response_1.tool_calls:
         tool_results = execute_tools_inline(response_1, search_tools)
         
-        # construct temporary history for this synthesis step
         synthesis_messages = [
             SystemMessage(content=LIBRARIAN_SYSTEM_PROMPT),
             *messages,
             response_1, 
-            *tool_results 
+            *tool_results,
+            SystemMessage(content="You have the search results. Now synthesize the findings into a clear response. Do NOT use tools again.")
         ]
         
-        final_response = llm_flash.invoke(synthesis_messages)
+        final_response = llm_with_tools.invoke(synthesis_messages)
         final_response.name = "Librarian"
         return {"messages": [final_response], "current_speaker": "Librarian"}
     
@@ -204,9 +202,10 @@ def novelty_node(state: GraphState):
             SystemMessage(content=NOVELTY_SYSTEM_PROMPT),
             *messages,
             response_1,
-            *tool_results
+            *tool_results,
+            SystemMessage(content="You have the search results. Now synthesize the findings into a clear response. Do NOT use tools again.")
         ]
-        final_response = llm_flash.invoke(synthesis_messages)
+        final_response = llm_with_tools.invoke(synthesis_messages)
         final_response.name = "Novelty_Detector"
         return {"messages": [final_response], "current_speaker": "Novelty_Detector"}
     
