@@ -72,5 +72,12 @@ The system consists of six specialized agents, each with a distinct role and set
 
 ##  Screenshots
 
+<img width="2879" height="1585" alt="image" src="https://github.com/user-attachments/assets/43c042fd-3580-4f2f-aa9a-750519381b46" />
+<img width="2879" height="1585" alt="image" src="https://github.com/user-attachments/assets/f82e8326-c876-48fc-8855-3b4b56ffb937" />
+<img width="2879" height="1587" alt="image" src="https://github.com/user-attachments/assets/c269693e-7313-4930-aebe-cc7c6f9d9f00" />
+
+
+
+
 
 
