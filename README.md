@@ -75,12 +75,15 @@ The system consists of six specialized agents, each with a distinct role and set
 ### Example prompt sent by user. Proponent responds by finding strengths in the idea.
 ### Librarian Tool called (semanticScholar, arXiv API)
 <img width="2879" height="1585" alt="image" src="https://github.com/user-attachments/assets/43c042fd-3580-4f2f-aa9a-750519381b46" />
+
 ### Critic fires back with flaws in the user's idea.
 <img width="2879" height="1585" alt="image" src="https://github.com/user-attachments/assets/f82e8326-c876-48fc-8855-3b4b56ffb937" />
-### Proponent takes criticism into account and creates an improved plan modification.
+
+### Proponent takes criticism into account and creates an improved plan.
 <img width="2879" height="1590" alt="image" src="https://github.com/user-attachments/assets/76b646ca-267d-4413-9857-b69159d6dd07" />
 <img width="2879" height="1575" alt="image" src="https://github.com/user-attachments/assets/90580e06-a16c-49dc-b515-0bba35e939fd" />
-### Summary of the overall idea
+
+### Summary of the overall idea.
 <img width="2879" height="1587" alt="image" src="https://github.com/user-attachments/assets/c269693e-7313-4930-aebe-cc7c6f9d9f00" />
 
 
